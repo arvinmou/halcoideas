@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Data Quality & Assurance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-[#0f172a] font-sans p-8 text-white">
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8 border-b border-slate-700 pb-4">
+            <h1 class="text-3xl font-bold text-sky-400">Carbon Data Quality Dashboard</h1>
+            <p class="text-slate-400 text-sm mt-1">Audit, Compliance, and Calculation Confidence Scoring</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left Panel: Quality Summary Table -->
+            <div class="lg:col-span-5 bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h3 class="text-lg font-semibold mb-6 flex items-center"><span class="w-3 h-3 bg-green-400 rounded-full mr-2"></span> Data Quality Summary</h3>
+                <ul class="space-y-4">
+                    <li class="flex justify-between items-center bg-slate-700/50 p-3 rounded-lg">
+                        <span class="text-slate-300">Jobs with Carbon Calculations</span>
+                        <span class="font-bold text-sky-300">86%</span>
+                    </li>
+                    <li class="flex justify-between items-center bg-slate-700/50 p-3 rounded-lg">
+                        <span class="text-slate-300">Jobs Missing Calculations</span>
+                        <span class="font-bold text-rose-400">14%</span>
+                    </li>
+                    <li class="flex justify-between items-center bg-slate-700/50 p-3 rounded-lg">
+                        <span class="text-slate-300">Average Confidence Score</span>
+                        <span class="font-bold text-amber-300">0.82 / 1.0</span>
+                    </li>
+                    <li class="flex justify-between items-center bg-slate-700/50 p-3 rounded-lg border-l-4 border-emerald-500">
+                        <span class="text-slate-300">Audit Status</span>
+                        <span class="font-bold text-emerald-400 text-sm uppercase">Prepared</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right Panel: Calculation Tiers & Recent Exceptions -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+                <!-- Tiers Chart -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 flex-1">
+                    <h3 class="text-lg font-semibold mb-2">Calculation Method Tiers</h3>
+                    <p class="text-xs text-slate-400 mb-4">Tier 1: Metered Data | Tier 2: Modeled Estimates | Tier 3: Industry Averages</p>
+                    <div class="relative h-48">
+                        <canvas id="tiersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Panel: Top 5 Carbon Impact Jobs list (Data Table simulation) -->
+        <div class="mt-6 bg-slate-800 p-6 rounded-xl border border-slate-700">
+            <h3 class="text-lg font-semibold mb-4">Top 5 Recent Jobs by Carbon Impact</h3>
+            <table class="w-full text-left text-sm text-slate-300">
+                <thead class="text-xs text-slate-400 uppercase bg-slate-700/50">
+                    <tr>
+                        <th class="px-4 py-3 rounded-tl-lg">Job ID</th>
+                        <th class="px-4 py-3">Location</th>
+                        <th class="px-4 py-3">Job Type</th>
+                        <th class="px-4 py-3 rounded-tr-lg">Savings (Est.)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700">
+                    <tr><td class="px-4 py-3">#9021A</td><td class="px-4 py-3">Ithaca, NY</td><td class="px-4 py-3">Commercial Heat Pump</td><td class="px-4 py-3 text-sky-300 font-bold">14.2 tons</td></tr>
+                    <tr><td class="px-4 py-3">#8834B</td><td class="px-4 py-3">Rochester, NY</td><td class="px-4 py-3">Solar Array (15kW)</td><td class="px-4 py-3 text-sky-300 font-bold">11.5 tons</td></tr>
+                    <tr><td class="px-4 py-3">#8911C</td><td class="px-4 py-3">Trumansburg, NY</td><td class="px-4 py-3">Geothermal</td><td class="px-4 py-3 text-sky-300 font-bold">9.8 tons</td></tr>
+                    <tr><td class="px-4 py-3">#8992D</td><td class="px-4 py-3">Syracuse, NY</td><td class="px-4 py-3">Deep Energy Retrofit</td><td class="px-4 py-3 text-sky-300 font-bold">8.1 tons</td></tr>
+                    <tr><td class="px-4 py-3">#9045E</td><td class="px-4 py-3">Auburn, NY</td><td class="px-4 py-3">Insulation & Air Sealing</td><td class="px-4 py-3 text-sky-300 font-bold">7.8 tons</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Stacked Bar Chart - Method Tiers
+        const ctxTiers = document.getElementById('tiersChart').getContext('2d');
+        new Chart(ctxTiers, {
+            type: 'bar',
+            data: {
+                labels:['Q1', 'Q2', 'Q3', 'Q4 (Current)'],
+                datasets:[
+                    { label: 'Tier 1 (Metered)', data:[15, 22, 30, 40], backgroundColor: '#38bdf8' },
+                    { label: 'Tier 2 (Modeled)', data: [50, 45, 40, 33], backgroundColor: '#818cf8' },
+                    { label: 'Tier 3 (Average)', data:[35, 33, 30, 13], backgroundColor: '#475569' }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true, grid: { display: false, color: '#334155'} },
+                    y: { stacked: true, grid: { color: '#334155'}, ticks: { callback: function(value) { return value + "%" } } }
+                },
+                plugins: {
+                    legend: { labels: { color: '#cbd5e1' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
