@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regional Carbon Portfolio Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 font-sans p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Regional Carbon Portfolio</h1>
+            <p class="text-gray-500 text-sm mt-1">Geographical and Sector Impact Breakdown</p>
+        </header>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-400 text-sm font-semibold">Total Active Green Projects</h3>
+                    <p class="text-2xl font-bold text-gray-800 mt-1">33,928</p>
+                </div>
+                <div class="bg-indigo-100 p-3 rounded-full"><span class="text-indigo-600 text-xl">🏢</span></div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-400 text-sm font-semibold">Avg. Carbon Avoided / Project</h3>
+                    <p class="text-2xl font-bold text-gray-800 mt-1">5.3 <span class="text-sm font-normal text-gray-500">Tons</span></p>
+                </div>
+                <div class="bg-green-100 p-3 rounded-full"><span class="text-green-600 text-xl">♻️</span></div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-400 text-sm font-semibold">Top Performing Region</h3>
+                    <p class="text-2xl font-bold text-gray-800 mt-1">Ithaca, NY</p>
+                </div>
+                <div class="bg-orange-100 p-3 rounded-full"><span class="text-orange-600 text-xl">📍</span></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Top Cities Horizontal Bar Chart -->
+            <div class="bg-white p-6 rounded-lg shadow-sm lg:col-span-2">
+                <h3 class="text-gray-700 font-bold mb-4">Top Cities by Carbon Reduction (Tons)</h3>
+                <canvas id="topCitiesChart" height="120"></canvas>
+            </div>
+            
+            <!-- Sector Breakdown Doughnut -->
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <h3 class="text-gray-700 font-bold mb-4">Sector Distribution</h3>
+                <div class="relative h-64 w-full flex justify-center">
+                    <canvas id="sectorChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Horizontal Bar - Top Cities
+        const ctxCities = document.getElementById('topCitiesChart').getContext('2d');
+        new Chart(ctxCities, {
+            type: 'bar',
+            data: {
+                labels:['Ithaca', 'Rochester', 'Syracuse', 'Trumansburg', 'Auburn'],
+                datasets:[{
+                    label: 'Tons CO₂',
+                    data:[15400, 9800, 8200, 4500, 4100],
+                    backgroundColor: '#4f46e5',
+                    borderRadius: 3
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Makes it a horizontal bar chart
+                responsive: true,
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Doughnut Chart - Residential vs Commercial
+        const ctxSector = document.getElementById('sectorChart').getContext('2d');
+        new Chart(ctxSector, {
+            type: 'doughnut',
+            data: {
+                labels: ['Residential', 'Commercial', 'Industrial'],
+                datasets: [{
+                    data: [65, 25, 10], // Percentages
+                    backgroundColor:['#10b981', '#3b82f6', '#f59e0b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
